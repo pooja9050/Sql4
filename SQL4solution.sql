@@ -76,3 +76,20 @@ FROM ACTE
 WHERE num = (
     SELECT MAX(num) FROM ACTE
     );
+
+#Alternative approach
+WITH CTE AS (
+    SELECT requester_id AS id, 
+       (SELECT COUNT(*) 
+        FROM RequestAccepted AS ra
+        WHERE ra.requester_id = r.requester_id OR ra.accepter_id = r.requester_id) AS num
+FROM RequestAccepted AS r
+UNION ALL
+SELECT accepter_id AS id,(
+    SELECT COUNT(*) FROM RequestAccepted AS ra
+    WHERE ra.requester_id = r.accepter_id OR ra.accepter_id = r.accepter_id) AS num
+    FROM RequestAccepted AS r)
+
+SELECT id, num FROM CTE
+Order BY num DESC LIMIT 1;
+
