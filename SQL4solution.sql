@@ -52,3 +52,13 @@ ON o.com_id = c.com_id WHERE c.name = "Red");
 With CTE AS (SELECT o.sales_id FROM Orders o LEFT JOIN Company c ON o.com_id = c.com_id WHERE c.name = "Red")
 SELECT s.name FROM salesperson s WHere s.sales_id NOT IN (SELECT sales_id FROM CTE);
 
+#602. Friend Requests II: Who Has the Most Friends
+# Write your MySQL query statement below
+With CTE AS (
+    SELECT requester_id AS r1 FROM RequestAccepted
+    UNION ALL
+    SELECT accepter_id as 'r1' FROM RequestAccepted),
+ACTE AS (
+    SELECT r1 AS 'id', COUNT(r1) AS 'num' FROM CTE GROUP BY r1)
+SELECT id, num FROM ACTE ORDER BY num DESC LIMIT 1;
+
