@@ -41,3 +41,14 @@ SELECT t.team_name, count(r1) AS 'matches_played', SUM(
        ELSE 0
        END) AS 'points', SUM(c.g1) AS 'goal_for', SUM(c.g2) AS 'goal_against' , SUM(c.g1) - SUM(c.g2) AS 'goal_diff' FROM Teams t JOIN CTE c ON t.team_id = c.r1 GROUP BY c.r1 Order by points DESC, goal_diff DESC, t.team_name;
 
+
+607. Sales Person
+# Write your MySQL query statement below
+SELECT s.name FROM Salesperson s WHERE s.sales_id NOT IN (SELECT o.sales_id FROM Orders o LEFT JOIN Company c
+ON o.com_id = c.com_id WHERE c.name = "Red");
+
+
+#Using CTE  
+With CTE AS (SELECT o.sales_id FROM Orders o LEFT JOIN Company c ON o.com_id = c.com_id WHERE c.name = "Red")
+SELECT s.name FROM salesperson s WHere s.sales_id NOT IN (SELECT sales_id FROM CTE);
+
