@@ -62,3 +62,17 @@ ACTE AS (
     SELECT r1 AS 'id', COUNT(r1) AS 'num' FROM CTE GROUP BY r1)
 SELECT id, num FROM ACTE ORDER BY num DESC LIMIT 1;
 
+#Using WHERE clause
+# Write your MySQL query statement below
+With CTE AS (
+    SELECT requester_id AS r1 FROM RequestAccepted
+    UNION ALL
+    SELECT accepter_id as 'r1' FROM RequestAccepted),
+ACTE AS (
+    SELECT r1 AS 'id', COUNT(r1) AS 'num' FROM CTE GROUP BY r1)
+
+SELECT id, num 
+FROM ACTE
+WHERE num = (
+    SELECT MAX(num) FROM ACTE
+    );
